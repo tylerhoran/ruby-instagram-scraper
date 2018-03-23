@@ -33,6 +33,6 @@ nodes = RubyInstagramScraper.get_tag_media_nodes( "gopro" )
 RubyInstagramScraper.get_tag_media_nodes( "gopro", nodes.last["id"] )
 
 # Get media info:
-RubyInstagramScraper.get_media( nodes.first["code"] )
+RubyInstagramScraper.get_media( nodes.first["shortcode"] )
 RubyInstagramScraper.get_media( "BGGnlHDBV3N" )
 ```
