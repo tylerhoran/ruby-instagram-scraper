@@ -4,6 +4,7 @@ require 'json'
 module RubyInstagramScraper
 
   BASE_URL = "https://www.instagram.com"
+  USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"
 
   def self.search ( query )
     # return false unless query
@@ -23,11 +24,11 @@ module RubyInstagramScraper
   end
 
   def self.get_user ( username, max_id = nil )
-    url = "#{BASE_URL}/#{ username }/?__a=1"
-    params = ""
-    params = "&max_id=#{ max_id }" if max_id
-
-    JSON.parse( open( "#{url}#{params}" ).read )["graphql"]["user"]
+    url = "#{BASE_URL}/#{ username }/"
+    data = open(url, "User-Agent" => USER_AGENT).read
+    matches = data.match(/window._sharedData =(.*);<\/script>/)
+    json = JSON.parse(matches[1])
+    json["entry_data"]["ProfilePage"][0]["graphql"]["user"]
   end
 
   def self.get_tag_media_nodes ( tag, max_id = nil )
@@ -44,7 +45,7 @@ module RubyInstagramScraper
 
     JSON.parse( open( "#{url}#{params}" ).read )["graphql"]["shortcode_media"]
   end
-  # 
+  #
   # def self.get_media_comments ( shortcode, count = 40, before = nil )
   #   params = before.nil?? "comments.last(#{ count })" : "comments.before( #{ before } , #{count})"
   #   url = "#{BASE_URL}/query/?q=ig_shortcode(#{ shortcode }){#{ params }\
