@@ -28,6 +28,7 @@ module RubyInstagramScraper
     data = open(url, "User-Agent" => USER_AGENT).read
     matches = data.match(/window._sharedData =(.*);<\/script>/)
     json = JSON.parse(matches[1])
+    return nil if json["entry_data"]["ProfilePage"].nil?
     json["entry_data"]["ProfilePage"][0]["graphql"]["user"]
   end
 
