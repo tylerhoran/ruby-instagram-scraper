@@ -4,7 +4,7 @@ require 'json'
 module RubyInstagramScraper
 
   BASE_URL = "https://www.instagram.com"
-  USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"
+  USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"
 
   def self.search ( query )
     # return false unless query
@@ -27,6 +27,7 @@ module RubyInstagramScraper
     url = "#{BASE_URL}/#{ username }/"
     data = open(url, "User-Agent" => USER_AGENT).read
     matches = data.match(/window._sharedData =(.*);<\/script>/)
+    return nil if matches.nil?
     json = JSON.parse(matches[1])
     return nil if json["entry_data"]["ProfilePage"].nil?
     json["entry_data"]["ProfilePage"][0]["graphql"]["user"]
